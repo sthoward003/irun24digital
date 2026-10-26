@@ -56,6 +56,13 @@ Either file means the project is linked. Check for both.
 
 This is the ideal state. The project is linked and has git integration.
 
+0. **Check the current branch first.** Pushing to the production branch (usually `main` or `master`) triggers a production deployment, and approval to push is not approval to release to production:
+   ```bash
+   git branch --show-current
+   git remote show origin | sed -n 's/.*HEAD branch: //p'
+   ```
+   If the current branch is the production branch and the user did not explicitly ask for production, do not push it. Either push the changes to a new non-production branch (e.g. `git switch -c preview/<description>`) or use `vercel deploy [path] -y --no-wait` for a preview.
+
 1. **Ask the user before pushing.** Never push without explicit approval:
    ```
    This project is connected to Vercel via git. I can commit and push to

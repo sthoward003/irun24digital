@@ -249,8 +249,8 @@ async function main() {
   const hardRegenIndexes = new Set(regenPlan.map((p) => p.index));
   const qualityDroppedIndexes = new Set(
     qualityCheck.dropped
-      .map((d) => recsGraded.findIndex((g) => g.rec === d.rec))
-      .filter((i) => i >= 0)
+      .map((d) => recsGraded.find((g) => g.rec === d.rec)?.index)
+      .filter((i) => i !== undefined)
   );
   const needsReviewIndexes = new Set(
     recsGraded
@@ -303,7 +303,7 @@ async function main() {
     sanitizerDropped,
     regenPlan,
     qualityDropped: qualityCheck.dropped.map((d) => ({
-      index: recsGraded.findIndex((g) => g.rec === d.rec),
+      index: recsGraded.find((g) => g.rec === d.rec)?.index ?? -1,
       candidateRef: d.rec.candidateRef ?? null,
       quality: d.rec.quality,
       reason: d.reason,
